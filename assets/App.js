@@ -1,12 +1,14 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import TestingPage from "./components/pages/backend/testingPage";
+import Posts from "./components/pages/front/posts/Posts";
 
 const App = () => {
     return (
         <div>
             <Routes>
                 <Route index exact path="/" element={<TestingPage />} />
+                <Route path="/posts" element={<Posts />} />
             </Routes>
         </div>
     )

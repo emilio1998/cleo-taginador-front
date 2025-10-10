@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {Bars3Icon} from "@heroicons/react/24/solid";
 import Header from "./content/Header";
 import Footer from "./content/Footer";
+import Sidebar from "./Sidebar";
 
 const Layout = ({ children }) => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -9,9 +10,9 @@ const Layout = ({ children }) => {
     return (
         <div className="flex min-h-screen min-w-screen">
 
+            <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
-
-            <div className="flex-col w-full lg:pl-64 pl-0">
+            <div className="flex flex-col w-full lg:pl-64 pl-0">
                 <div className="flex py-1 px-2">
                     <button
                         type="button"

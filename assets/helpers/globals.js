@@ -8,3 +8,5 @@ if (process.env.NODE_ENV === 'production') {
         server: 'http://localhost:23000/XX3PROJECT',
     }
 }
+
+export default GLOBAL;
