@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { listarGruposEtiquetas } from "../../../../redux/actions/busquedaTagsActions";
+import { listarGruposEtiquetas, listarTags } from "../../../../redux/actions/busquedaTagsActions";
 
 const PostsContainer = () => {
 
@@ -13,15 +13,15 @@ const PostsContainer = () => {
 
     const url = window.location.href;
 
-    const listarGruposEtiquetasFunc = () => {
-        dispatch(listarGruposEtiquetas())
+    const listarTagsFunc = () => {
+        dispatch(listarTags())
             .then((res) => {
                 if (res.status) {
                     if (res.status === 200) {
                         // Aquí puedes manejar la respuesta exitosa
-                        console.log("Grupos de etiquetas:", res.data);
-                        const grupoTags = res.data.data;
-                        setGrupoTags(grupoTags);
+                        console.log("Tags:", res.data);
+                        const tags = res.data.data;
+                        setGrupoTags(tags);
                     } else {
                         console.log("Error al listar grupos de etiquetas:", res);
                     }
@@ -32,7 +32,7 @@ const PostsContainer = () => {
     }
 
     useEffect(() => {
-        listarGruposEtiquetasFunc();
+        listarTagsFunc();
     }, []); // El array vacío asegura que se ejecute solo una vez al montar el componente
 
     useEffect(() => {
@@ -62,15 +62,16 @@ const PostsContainer = () => {
                     </div>
                 </>
             ) : (
-                <div className="flex flex-wrap items-start justify-start gap-x-6 gap-y-4">
+                <div className="flex flex-wrap items-start justify-start gap-3">
                     {grupoTags.map((item, i) => (
                         <button
                             key={i}
                             type="button"
                             onClick={() => navigate(`/posts?grupo=${item.ID}`)}
-                            className="bg-white rounded-xl shadow-lg p-10 text-center cursor-pointer hover:scale-105 transition-transform"
+                            className="rounded-full px-4 py-2 bg-white border border-gray-200 text-base font-semibold cursor-pointer hover:bg-gray-100 transition"
+                            style={{ color: item.color }}
                         >
-                            <h1 className={`text-3xl font-bold ${item.color} mb-2`}>{item.title}</h1>
+                            {item.title}
                         </button>
                     ))}
                 </div>
