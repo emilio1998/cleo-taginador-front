@@ -59,14 +59,25 @@ const PostsContainer = () => {
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
+        if (params.has("tag")) {
+            // El parámetro "tag" existe
+            console.log("El parámetro tag existe:", params.get("tag"));
+            setIdTagSeleccionado(params.get("tag"));
+        } else {
+            // El parámetro "tag" NO existe
+            console.log("El parámetro tag NO existe");
+            setIdTagSeleccionado(null);
+        }
+
+        //POR GRUPO
         if (params.has("grupo")) {
             // El parámetro "grupo" existe
             console.log("El parámetro grupo existe:", params.get("grupo"));
-            setIdTagSeleccionado(params.get("grupo"));
+            setIdGrupoSeleccionado(params.get("grupo"));
         } else {
             // El parámetro "grupo" NO existe
             console.log("El parámetro grupo NO existe");
-            setIdTagSeleccionado(null);
+            setIdGrupoSeleccionado(0);
         }
     }, [url]);
 
@@ -75,7 +86,11 @@ const PostsContainer = () => {
             <div className="w-full flex gap-3 p-3 overflow-x-auto bg-blue-300 scrollbar-hide">
                 {posts.map((post, index) => (
                     <div key={index} className="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary pl-4 pr-4">
-                        <p className="text-white text-sm font-medium leading-normal">{post.title}</p>
+                        <button 
+                            className="text-white text-sm font-medium leading-normal cursor-pointer hover:underline"
+                            type="button"
+                            onClick={() => navigate(`/posts?grupo=${post.ID}`)}
+                        >{post.title}</button>
                     </div>
                 ))}
             </div>
