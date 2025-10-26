@@ -4,7 +4,7 @@ import PostsContainer from "./PostsContainer";
 
 const Posts = () => {
     return (
-        <Layout>
+        <Layout tituloHeader={"Posts"}>
             <PostsContainer />
         </Layout>
     );

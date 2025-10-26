@@ -48,11 +48,10 @@ module.exports = function (argv, env) {
                 },
                 {
                     test: /\.(png|jpg|gif|mp4|ogg|webm)$/i,
-                    use: {
-                        loader: 'url-loader',
-                        options: {
-                            limit: 8192,
-                            name: '[name].[hash:8].[ext]',
+                    type: 'asset',
+                    parser: {
+                        dataUrlCondition: {
+                        maxSize: 8 * 1024, // 8kb
                         },
                     },
                 },

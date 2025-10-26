@@ -1,10 +1,10 @@
 import React from "react";
 import engranaje from "../../../images/icons/engranaje.svg";
 
-const Header = () => {
+const Header = ({ titulo="Inicio" }) => {
     return (
         <header className="flex items-center justify-between h-16 px-6 border-b border-primary/20 dark:border-primary/30 w-full">
-            <h1 className="text-2xl font-bold">Inicio</h1>
+            <h1 className="text-2xl font-bold">{titulo}</h1>
 
             <div className="flex items-center gap-4">
                 <div className="relative group">

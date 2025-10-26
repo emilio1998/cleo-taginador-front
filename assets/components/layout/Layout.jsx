@@ -4,7 +4,7 @@ import Header from "./content/Header";
 import Footer from "./content/Footer";
 import Sidebar from "./Sidebar";
 
-const Layout = ({ children }) => {
+const Layout = ({ children, tituloHeader }) => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
@@ -22,7 +22,7 @@ const Layout = ({ children }) => {
                         <Bars3Icon className="h-6 w-6" aria-hidden="true" />
                     </button>
 
-                    <Header />
+                    <Header titulo={tituloHeader} />
                 </div>
                 <div className="flex px-2 py-2">
                     {children}
