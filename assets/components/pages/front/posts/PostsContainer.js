@@ -83,17 +83,17 @@ const PostsContainer = () => {
 
     return (
         <div className="min-h-screen w-full flex flex-col items-start justify-start overflow-y-auto bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 p-10 space-y-8">
-            <div className="w-full flex gap-3 p-3 overflow-x-auto bg-blue-300 scrollbar-hide">
+            {/* <div className="w-full flex gap-3 p-3 overflow-x-auto bg-blue-300 scrollbar-hide">
                 {posts.map((post, index) => (
                     <div key={index} className="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary pl-4 pr-4">
                         <button 
                             className="text-white text-sm font-medium leading-normal cursor-pointer hover:underline"
                             type="button"
-                            onClick={() => navigate(`/posts?grupo=${post.ID}`)}
+                            onClick={() => navigate(`/?grupo=${post.ID}`)}
                         >{post.title}</button>
                     </div>
                 ))}
-            </div>
+            </div> */}
             {idTagSeleccionado ? (
                 <>
                     <div className="mb-6">
