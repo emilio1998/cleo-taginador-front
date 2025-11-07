@@ -13,7 +13,7 @@ const Layout = ({ children, tituloHeader }) => {
             {/* <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> */}
 
             <div className="flex flex-col w-full lg:pl-64 pl-0">
-                <div className="relative py-1 px-2">
+                <div className="relative py-1 px-2 -ml-64 lg:-ml-64 hidden md:flex">
                     {/* <button
                         type="button"
                         className="absolute top-2 left-2 border border-gray-200 p-3 px-4 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-slate-600 lg:hidden bg-white cursor-pointer"
@@ -24,6 +24,11 @@ const Layout = ({ children, tituloHeader }) => {
 
                     <Header titulo={tituloHeader} />
                 </div>
+
+                <div className="relative py-1 px-2 lg:hidden">
+                    <Header titulo={tituloHeader} />
+                </div>
+
                 <div className="flex px-2 py-2">
                     {children}
                 </div>
