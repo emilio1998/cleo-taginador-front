@@ -41,7 +41,20 @@ const Header = ({ titulo="Inicio" }) => {
                         // Aquí puedes manejar la respuesta exitosa
                         console.log("Posts:", res.data);
                         const posts = res.data.data;
-                        setPosts(posts);
+                        const postQuemado1 = {
+                            "ID": 12,
+                            "title": "PostQuemado1",
+                            "color": "#F97316",
+                            "posts": []
+                        }
+
+                        const postQuemado2 = {
+                            "ID": 13,
+                            "title": "PostQuemado2",
+                            "color": "#F97316",
+                            "posts": []
+                        }
+                        setPosts([...posts, postQuemado1, postQuemado2]);
                     } else {
                         console.log("Error al listar posts por grupo:", res);
                     }
@@ -131,14 +144,6 @@ const Header = ({ titulo="Inicio" }) => {
                     />
                 </div>
 
-                {/* <button
-                    type="button"
-                    className="absolute top-2 right-0 border border-gray-200 p-3 px-4 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-slate-600 lg:hidden bg-white cursor-pointer"
-                    onClick={() => setMenuOpen(!menuOpen)}
-                >
-                    <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-                </button> */}
-
                 {menuOpen && (
                     <div
                         ref={menuRef}
@@ -171,29 +176,30 @@ const Header = ({ titulo="Inicio" }) => {
                 )}
             </header>
 
-            <div className="hidden md:flex flex justify-center gap-3 p-3 overflow-x-auto bg-blue-300 scrollbar-hide mx-auto rounded-lg">
-                {posts.map((post, index) => (
-                    <div key={index} className="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary pl-4 pr-4">
-                        <button 
-                            className="text-white text-sm font-medium leading-normal cursor-pointer hover:underline"
-                            type="button"
-                            onClick={() => navigate(`/?grupo=${post.ID}`)}
-                        >{post.title}</button>
+                {/* Sección para que el usuario seleccione un grupo */}
+                {/* Barra única de grupos con wrap en varias líneas si no caben */}
+                <div className="w-full" style={{ maxWidth: '100vw' }}>
+                    <div
+                        className="flex flex-wrap gap-2 w-full justify-center mx-auto"
+                        style={{ maxWidth: '100vw', minWidth: 0, padding: '0.5rem 0' }}
+                    >
+                        {posts.map((post, index) => (
+                            <button
+                                key={index}
+                                type="button"
+                                onClick={() => {
+                                    if (post.ID === 0) {
+                                        navigate(`/`);
+                                    } else navigate(`/?grupo=${post.ID}`)
+                                }}
+                                className="flex items-center justify-center px-6 py-2 rounded-full border-2 border-blue-600 bg-white text-blue-700 text-base font-semibold shadow-sm transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                style={{ minWidth: '3.5rem', minHeight: '2.5rem', whiteSpace: 'nowrap' }}
+                            >
+                                {post.title}
+                            </button>
+                        ))}
                     </div>
-                ))}
-            </div>
-
-            {/* Versión Mobile */}
-            <div className="flex md:hidden justify-center items-center gap-2 p-2 bg-blue-200 rounded-full w-fit mx-auto shadow-md">
-                <select
-                    className="bg-primary text-white text-sm rounded-full px-3 py-1 outline-none"
-                    onChange={(e) => navigate(`/?grupo=${e.target.value}`)}
-                >
-                    {posts.map((post, index) => (
-                        <option key={index} value={post.ID}>{post.title}</option>
-                    ))}
-                </select>
-            </div>
+                </div>
         </div>
     )
 }

@@ -5,7 +5,7 @@ if (process.env.NODE_ENV === 'production') {
     }
 } else {
     GLOBAL = {
-        server: 'http://localhost:23000/XX3PROJECT',
+        server: 'http://192.168.100.8:23000/XX3PROJECT',
     }
 }
 

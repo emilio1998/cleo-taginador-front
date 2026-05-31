@@ -40,8 +40,8 @@ const PostsContainer = () => {
                 if (res.status) {
                     if (res.status === 200) {
                         // Aquí puedes manejar la respuesta exitosa
-                        console.log("Posts:", res.data);
                         const posts = res.data.data;
+                        console.log("Posts:", posts);
                         setPosts(posts);
                     } else {
                         console.log("Error al listar posts por grupo:", res);
@@ -83,30 +83,32 @@ const PostsContainer = () => {
 
     return (
         <div className="min-h-screen w-full flex flex-col items-start justify-start overflow-y-auto bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 p-10 space-y-8">
-            {idTagSeleccionado ? (
+            {!!idGrupoSeleccionado && (
                 <>
                     <div className="mb-6">
-                        <a href="/posts" className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-white/80 hover:bg-white shadow-sm border border-gray-200 text-sm font-medium">
+                        <a href="/" className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-white/80 hover:bg-white shadow-sm border border-gray-200 text-sm font-medium">
                             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
                             </svg>
-                            Volver
+                            TODOS
                         </a>
                     </div>
                 </>
-            ) : (
-                <div className="flex flex-wrap items-start justify-start gap-3">
-                    <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-                        {posts.length !== 0 && 
-                            posts[idGrupoSeleccionado].posts.map((item, i) => (
-                                <a href="#" class="group" key={i}>
-                                    <img src={imagen} alt="Tall slender porcelain bottle with natural clay textured body and cork stopper." class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8" />
-                                    <h3 class="mt-4 text-sm text-gray-700">{item.TITULO}</h3>
-                                </a>
-                            ))}
-                    </div>
-                </div>
             )}
+            <div className="flex flex-wrap items-start justify-start gap-3">
+                <div class="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+                    {posts.length !== 0 && 
+                        posts.find(p => p.ID === parseInt(idGrupoSeleccionado)) && (
+                            posts.find(p => p.ID === parseInt(idGrupoSeleccionado)).posts.map((item, i) => (
+                                <a href="#" class="group flex flex-col items-center justify-center" key={i}>
+                                    <img src={imagen} alt="Tall slender porcelain bottle with natural clay textured body and cork stopper." class="aspect-square w-40 h-40 rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8 mx-auto" />
+                                    <h3 class="mt-3 text-base text-gray-700 text-center w-full">{item.TITULO}</h3>
+                                </a>
+                            ))
+                        )
+                    }
+                </div>
+            </div>
         </div>
     );
 }
