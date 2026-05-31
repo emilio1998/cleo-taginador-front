@@ -83,17 +83,6 @@ const PostsContainer = () => {
 
     return (
         <div className="min-h-screen w-full flex flex-col items-start justify-start overflow-y-auto bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 p-10 space-y-8">
-            {/* <div className="w-full flex gap-3 p-3 overflow-x-auto bg-blue-300 scrollbar-hide">
-                {posts.map((post, index) => (
-                    <div key={index} className="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary pl-4 pr-4">
-                        <button 
-                            className="text-white text-sm font-medium leading-normal cursor-pointer hover:underline"
-                            type="button"
-                            onClick={() => navigate(`/?grupo=${post.ID}`)}
-                        >{post.title}</button>
-                    </div>
-                ))}
-            </div> */}
             {idTagSeleccionado ? (
                 <>
                     <div className="mb-6">
@@ -107,24 +96,12 @@ const PostsContainer = () => {
                 </>
             ) : (
                 <div className="flex flex-wrap items-start justify-start gap-3">
-                    {/* {grupoTags.map((item, i) => (
-                        <button
-                            key={i}
-                            type="button"
-                            onClick={() => navigate(`/posts?grupo=${item.ID}`)}
-                            className="rounded-full px-4 py-2 bg-white border border-gray-200 text-base font-semibold cursor-pointer hover:bg-gray-100 transition"
-                            style={{ color: item.color }}
-                        >
-                            {item.title}
-                        </button>
-                    ))} */}
                     <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
                         {posts.length !== 0 && 
                             posts[idGrupoSeleccionado].posts.map((item, i) => (
                                 <a href="#" class="group" key={i}>
                                     <img src={imagen} alt="Tall slender porcelain bottle with natural clay textured body and cork stopper." class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8" />
                                     <h3 class="mt-4 text-sm text-gray-700">{item.TITULO}</h3>
-                                    {/* <p class="mt-1 text-lg font-medium text-gray-900">$48</p> */}
                                 </a>
                             ))}
                     </div>
