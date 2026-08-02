@@ -11,7 +11,7 @@ import homo from '../../../images/homo.png';
 import {Bars3Icon} from "@heroicons/react/24/solid";
 import FotoSidebar from './FotoSidebar';
 import ComboBoxImage from "./common/inputs/ComboBoxImage";
-import { listarPostsPorGrupo } from "../../../redux/actions/busquedaTagsActions";
+import { listarPostsPorGrupo, listarTags, listarPostsPorTag } from "../../../redux/actions/busquedaTagsActions";
 
 const fruits = [
   { name: 'Todo', imageUrl: deTodo },
@@ -27,14 +27,15 @@ const Header = ({ titulo="Inicio" }) => {
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(fruits[0]);
 
     const [posts, setPosts] = useState([]);
+    const [tags, setTags] = useState([]);
     const [idGrupoSeleccionado, setIdGrupoSeleccionado] = useState(0);
 
     const [menuOpen, setMenuOpen] = useState(false);
 
     const url = window.location.href;
 
-    const listarPostsPorGrupoFunc = () => {
-        dispatch(listarPostsPorGrupo())
+    const listarPostsPorTagFunc = () => {
+        dispatch(listarPostsPorTag())
             .then((res) => {
                 if (res.status) {
                     if (res.status === 200) {
@@ -65,7 +66,7 @@ const Header = ({ titulo="Inicio" }) => {
     }
 
     useEffect(() => {
-        listarPostsPorGrupoFunc();
+        listarPostsPorTagFunc();
     }, []);
 
     const menuRef = useRef();

@@ -2,40 +2,22 @@ import React, {useState, useEffect} from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import imagen from '../../../../images/imagen.png';
-import { listarGruposEtiquetas, listarTags, listarPostsPorGrupo } from "../../../../redux/actions/busquedaTagsActions";
+import { listarGruposEtiquetas, listarTags, listarPostsPorGrupo, listarPostsPorTag } from "../../../../redux/actions/busquedaTagsActions";
 
 const PostsContainer = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [grupoTags, setGrupoTags] = useState([]);
     const [posts, setPosts] = useState([]);
+    const [tags, setTags] = useState([]);
     const [idTagSeleccionado, setIdTagSeleccionado] = useState(null);
     const [idGrupoSeleccionado, setIdGrupoSeleccionado] = useState(0);
 
     const url = window.location.href;
 
-    const listarTagsFunc = () => {
-        dispatch(listarTags())
-            .then((res) => {
-                if (res.status) {
-                    if (res.status === 200) {
-                        // Aquí puedes manejar la respuesta exitosa
-                        console.log("Tags:", res.data);
-                        const tags = res.data.data;
-                        setGrupoTags(tags);
-                    } else {
-                        console.log("Error al listar grupos de etiquetas:", res);
-                    }
-                } else{
-                    console.log("Error en la respuesta:", res);
-                }
-            });
-    }
-
-    const listarPostsPorGrupoFunc = () => {
-        dispatch(listarPostsPorGrupo())
+    const listarPostsPorTagFunc = () => {
+        dispatch(listarPostsPorTag())
             .then((res) => {
                 if (res.status) {
                     if (res.status === 200) {
@@ -52,9 +34,27 @@ const PostsContainer = () => {
             });
     }
 
+    const listarTagsFunc = () => {
+        dispatch(listarTags())
+            .then((res) => {
+                if (res.status) {
+                    if (res.status === 200) {
+                        // Aquí puedes manejar la respuesta exitosa
+                        console.log("Tags PP:", res.data);
+                        const tags = res.data.data;
+                        setTags(tags);
+                    } else {
+                        console.log("Error al listar tags:", res);
+                    }
+                } else {
+                    console.log("Error en la respuesta:", res);
+                }
+            });
+    }
+
     useEffect(() => {
+        listarPostsPorTagFunc();
         listarTagsFunc();
-        listarPostsPorGrupoFunc();
     }, []); // El array vacío asegura que se ejecute solo una vez al montar el componente
 
     useEffect(() => {

@@ -65,6 +65,40 @@ export function listarPostsPorGrupo() {
     }
 }
 
+export function listarPostsPorTag() {
+    try {
+        return async function (dispatch) {
+            dispatch({type: "LISTAR_POSTS_POR_TAG"});
+            let token = localStorage.getItem("token");
+            const url = server + "/busqueda-tags/listarPostsPorTag";
+            const body = {
+                excluirGruposId: "1,10"
+            }
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+            return axios.post(
+                url, body, { headers }
+            )
+            .then((res) => {
+                dispatch({ type: "LISTAR_POSTS_POR_TAG_SUCCESS", payload: res.data });
+                return res;
+            })
+            .catch((error) => {
+                dispatch({ type: "LISTAR_POSTS_POR_TAG_ERROR", payload: {} });
+                let res = {};
+                if (!!error.response) {
+                    res = error.response;
+                }
+                return res;
+            });
+        }
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 export function listarTags() {
     try {
         return async function (dispatch) {
