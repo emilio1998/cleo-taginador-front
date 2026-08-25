@@ -177,12 +177,12 @@ const Header = ({ titulo="Inicio" }) => {
                 )}
             </header>
 
-                {/* Sección para que el usuario seleccione un grupo */}
-                {/* Barra única de grupos con wrap en varias líneas si no caben */}
-                <div className="w-full" style={{ maxWidth: '100vw' }}>
+                {/* Sección para que el usuario seleccione un tag */}
+                {/* Barra única de grupos en línea horizontal, con scroll si no caben, alineada al ancho de Posts */}
+                <div className="w-full max-w-[96rem] mx-auto">
                     <div
-                        className="flex flex-wrap gap-2 w-full justify-center mx-auto"
-                        style={{ maxWidth: '100vw', minWidth: 0, padding: '0.5rem 0' }}
+                        className="flex flex-nowrap gap-2 w-full overflow-x-auto scrollbar-thin-tags"
+                        style={{ minWidth: 0, padding: '0.5rem 0' }}
                     >
                         {posts.map((post, index) => (
                             <button
@@ -193,8 +193,15 @@ const Header = ({ titulo="Inicio" }) => {
                                         navigate(`/`);
                                     } else navigate(`/?grupo=${post.ID}`)
                                 }}
-                                className="flex items-center justify-center px-6 py-2 rounded-full border-2 border-blue-600 bg-white text-blue-700 text-base font-semibold shadow-sm transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                style={{ minWidth: '3.5rem', minHeight: '2.5rem', whiteSpace: 'nowrap' }}
+                                className="flex items-center justify-center px-4 py-1 rounded-full border-2 text-base font-semibold shadow-sm transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 shrink-0"
+                                style={{ 
+                                    minWidth: '3.5rem', 
+                                    minHeight: '2.5rem', 
+                                    whiteSpace: 'nowrap',
+                                    backgroundColor: "#ffffff",
+                                    color: post.color ? post.color : "#1D4ED8",
+                                    borderColor: post.color ? post.color : "#2563EB"
+                                }}
                             >
                                 {post.title}
                             </button>

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import imagen from '../../../../images/imagen.png';
+import imagen from '../../../../images/icons/video-placeholder.svg';
 import { listarGruposEtiquetas, listarTags, listarPostsPorGrupo, listarPostsPorTag } from "../../../../redux/actions/busquedaTagsActions";
 
 const PostsContainer = () => {
@@ -82,7 +82,7 @@ const PostsContainer = () => {
     }, [url]);
 
     return (
-        <div className="min-h-screen w-full flex flex-col items-start justify-start overflow-y-auto bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 p-10 space-y-8">
+        <div className="min-h-screen w-full flex flex-col items-start justify-start overflow-y-auto bg-gradient-to-br p-10 space-y-8">
             {!!idGrupoSeleccionado && (
                 <>
                     <div className="mb-6">
@@ -96,13 +96,13 @@ const PostsContainer = () => {
                 </>
             )}
             <div className="flex flex-wrap items-start justify-start gap-3">
-                <div class="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+                <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
                     {posts.length !== 0 && 
                         posts.find(p => p.ID === parseInt(idGrupoSeleccionado)) && (
                             posts.find(p => p.ID === parseInt(idGrupoSeleccionado)).posts.map((item, i) => (
-                                <a href="#" class="group flex flex-col items-center justify-center" key={i}>
-                                    <img src={imagen} alt="Tall slender porcelain bottle with natural clay textured body and cork stopper." class="aspect-square w-40 h-40 rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8 mx-auto" />
-                                    <h3 class="mt-3 text-base text-gray-700 text-center w-full">{item.TITULO}</h3>
+                                <a href="#" className="group flex flex-col w-full" key={i}>
+                                    <img src={imagen} alt={item.TITULO} className="aspect-video w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75" />
+                                    <h3 className="mt-2 text-sm text-gray-700 w-full line-clamp-2 break-words">{item.TITULO}</h3>
                                 </a>
                             ))
                         )

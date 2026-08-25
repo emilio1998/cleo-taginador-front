@@ -20,7 +20,7 @@ const Layout = ({ children, tituloHeader }) => {
                     <Header titulo={tituloHeader} />
                 </div>
 
-                <div className="flex px-2 py-2 max-w-5xl mx-auto w-full justify-center">
+                <div className="flex px-2 py-2 max-w-[100rem] mx-auto w-full justify-center">
                     {children}
                 </div>
                 <Footer />

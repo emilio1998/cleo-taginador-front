@@ -79,6 +79,12 @@ module.exports = function (argv, env) {
         resolve: {
             modules: ['assets', 'node_modules'],
             extensions: ['.js', '.jsx'],
+            alias: {
+                "react-dom/test-utils": "preact/test-utils",
+                "react-dom/client": "preact/compat/client",
+                "react-dom": "preact/compat",
+                "react": "preact/compat"
+            }
         },
         plugins: [
             new ProgressBarPlugin({

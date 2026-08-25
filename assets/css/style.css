@@ -21,6 +21,23 @@ body {
   border-radius: 2px important!;
 }
 
+/* Scroll horizontal de la barra de tags: más fino y sutil que el scrollbar global */
+.scrollbar-thin-tags {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db transparent;
+}
+.scrollbar-thin-tags::-webkit-scrollbar {
+  height: 4px;
+}
+.scrollbar-thin-tags::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin-tags::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 9999px;
+}
+
+
 
 
 

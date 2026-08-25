@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, Routes } from "react-router-dom";
 import TestingPage from "./components/pages/backend/testingPage";
 import Posts from "./components/pages/front/posts/Posts";
