@@ -1,17 +1,16 @@
 import React, {useState, useEffect, useRef} from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import engranaje from "../../../images/icons/engranaje.svg";
 import image1 from '../../../images/icons/image1.svg';
 import tagSelector from "../../../images/tag-selector.png";
-import carritoCompra from '../../../images/carritoCompra.png';
 import deTodo from '../../../images/deTodo.png';
 import hetero from '../../../images/hetero.png';
 import homo from '../../../images/homo.png';
-import {Bars3Icon} from "@heroicons/react/24/solid";
+import {Bars3Icon, UserCircleIcon, ShoppingCartIcon, Cog6ToothIcon, ArrowRightOnRectangleIcon} from "@heroicons/react/24/solid";
 import FotoSidebar from './FotoSidebar';
 import ComboBoxImage from "./common/inputs/ComboBoxImage";
 import { listarPostsPorGrupo, listarTags, listarPostsPorTag } from "../../../redux/actions/busquedaTagsActions";
+import { logout } from "../../../redux/actions/authActions";
 
 const fruits = [
   { name: 'Todo', imageUrl: deTodo },
@@ -19,10 +18,64 @@ const fruits = [
   { name: 'Homo', imageUrl: homo }
 ];
 
+const SettingsMenu = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const [open, setOpen] = useState(false);
+    const settingsRef = useRef();
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (open && settingsRef.current && !settingsRef.current.contains(event.target)) {
+                setOpen(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [open]);
+
+    const handleLogout = () => {
+        dispatch(logout()).then(() => {
+            setOpen(false);
+            // Recarga completa para limpiar cualquier estado/caché del usuario en memoria
+            window.location.href = "/";
+        });
+    };
+
+    return (
+        <div className="relative" ref={settingsRef}>
+            <button
+                onClick={() => setOpen(!open)}
+                className="flex items-center justify-center rounded-full size-10 bg-transparent hover:bg-slate-100 text-slate-600 focus:outline-none active:scale-95 transition-transform cursor-pointer"
+            >
+                <Cog6ToothIcon className="h-8 w-8" aria-hidden="true" />
+            </button>
+
+            {open && (
+                <div className="absolute right-0 mt-2 w-44 bg-white border border-slate-200 rounded-md shadow-lg z-50 py-1">
+                    <button
+                        onClick={handleLogout}
+                        className="flex w-full items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 cursor-pointer"
+                    >
+                        <ArrowRightOnRectangleIcon className="h-5 w-5" aria-hidden="true" />
+                        Cerrar sesión
+                    </button>
+                </div>
+            )}
+        </div>
+    );
+};
+
 const Header = ({ titulo="Inicio" }) => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const {isAuthenticated} = useSelector((state) => state.auth);
 
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(fruits[0]);
 
@@ -126,23 +179,23 @@ const Header = ({ titulo="Inicio" }) => {
                         onSelectElement={setCategoriaSeleccionada}
                         list={fruits}
                     />
-                    <button className="flex items-center justify-center rounded-full size-10 bg-primary/20 dark:bg-primary/30 text-primary">
-                        <img src={carritoCompra} alt="Carrito Compra" className="w-10 h-auto cursor-pointer" />
-                    </button>
-                    <button className="flex items-center justify-center rounded-full size-10 bg-primary/20 dark:bg-primary/30 text-primary">
+                    {isAuthenticated && (
+                        <button className="flex items-center justify-center rounded-full size-10 bg-transparent hover:bg-slate-100 text-slate-600 focus:outline-none active:scale-95 transition-transform cursor-pointer">
+                            <ShoppingCartIcon className="h-8 w-8" aria-hidden="true" />
+                        </button>
+                    )}
+                    {/* <button className="flex items-center justify-center rounded-full size-10 bg-primary/20 dark:bg-primary/30 text-primary">
                         <img src={tagSelector} alt="Logo de Tags Selector" className="w-10 h-auto cursor-pointer" />
-                    </button>
-                    <button className="flex items-center justify-center rounded-full size-10 bg-primary/20 dark:bg-primary/30 text-primary">
-                        <img src={engranaje} alt="Logo de engranaje" className="w-10 h-auto cursor-pointer" />
-                    </button>
-                    <button
-                        onClick={() => console.log("Foto clickeada")}
-                        className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 focus:outline-none active:scale-95 transition-transform cursor-pointer"
-                        style={{
-                            backgroundImage:
-                                'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBoDE8pE-2Y7Y0XIRAQCV0QJKla1fZc8FEKI_pS0L4Y735lMvWET0myuhQ0qo0po65pQRKBcediEno8iBGrVVHLoaCI8MQEboeeC0--ooNJlZ1hnpWQNT2iL31H-0P96aFS8Xx6naMazykJJTsuTCP8nrdWYqBR9SYiu_UFyH00oYFuep960ZxDpSkgnPCjPjh8mG3vy_hw5pnw254Ffh6Sre1gZsy06OukQGdy-vj0hrOQVMuJ8qy8azCwlNMn6F0RxCVOTCHgYk39")',
-                        }}
-                    />
+                    </button> */}
+                    {isAuthenticated && <SettingsMenu />}
+                    {!isAuthenticated && (
+                        <button
+                            onClick={() => navigate("/login")}
+                            className="flex items-center justify-center rounded-full size-10 bg-transparent hover:bg-slate-100 text-slate-600 focus:outline-none active:scale-95 transition-transform cursor-pointer"
+                        >
+                            <UserCircleIcon className="h-8 w-8" aria-hidden="true" />
+                        </button>
+                    )}
                 </div>
 
                 {menuOpen && (
@@ -156,23 +209,23 @@ const Header = ({ titulo="Inicio" }) => {
                             list={fruits}
                             mobil={true}
                         />
-                        <button className="flex items-center justify-center rounded-full size-10 bg-primary/20 dark:bg-primary/30 text-primary">
-                            <img src={carritoCompra} alt="Carrito Compra" className="w-10 h-auto cursor-pointer" />
-                        </button>
-                        <button className="flex items-center justify-center rounded-full size-10 bg-primary/20 dark:bg-primary/30 text-primary">
+                        {isAuthenticated && (
+                            <button className="flex items-center justify-center rounded-full size-10 bg-transparent hover:bg-slate-100 text-slate-600 focus:outline-none active:scale-95 transition-transform cursor-pointer">
+                                <ShoppingCartIcon className="h-8 w-8" aria-hidden="true" />
+                            </button>
+                        )}
+                        {/* <button className="flex items-center justify-center rounded-full size-10 bg-primary/20 dark:bg-primary/30 text-primary">
                             <img src={tagSelector} alt="Logo de Tags Selector" className="w-10 h-auto cursor-pointer" />
-                        </button>
-                        <button className="flex items-center justify-center rounded-full size-10 bg-primary/20 dark:bg-primary/30 text-primary">
-                            <img src={engranaje} alt="Logo de engranaje" className="w-10 h-auto cursor-pointer" />
-                        </button>
-                        <button
-                            onClick={() => console.log("Foto clickeada")}
-                            className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 focus:outline-none active:scale-95 transition-transform cursor-pointer"
-                            style={{
-                                backgroundImage:
-                                    'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBoDE8pE-2Y7Y0XIRAQCV0QJKla1fZc8FEKI_pS0L4Y735lMvWET0myuhQ0qo0po65pQRKBcediEno8iBGrVVHLoaCI8MQEboeeC0--ooNJlZ1hnpWQNT2iL31H-0P96aFS8Xx6naMazykJJTsuTCP8nrdWYqBR9SYiu_UFyH00oYFuep960ZxDpSkgnPCjPjh8mG3vy_hw5pnw254Ffh6Sre1gZsy06OukQGdy-vj0hrOQVMuJ8qy8azCwlNMn6F0RxCVOTCHgYk39")',
-                            }}
-                        />
+                        </button> */}
+                        {isAuthenticated && <SettingsMenu />}
+                        {!isAuthenticated && (
+                            <button
+                                onClick={() => navigate("/login")}
+                                className="flex items-center justify-center rounded-full size-10 bg-transparent hover:bg-slate-100 text-slate-600 focus:outline-none active:scale-95 transition-transform cursor-pointer"
+                            >
+                                <UserCircleIcon className="h-8 w-8" aria-hidden="true" />
+                            </button>
+                        )}
                     </div>
                 )}
             </header>
