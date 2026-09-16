@@ -43,7 +43,8 @@ const authReducer = (state = initial_state, action) => {
         ...state,
         authenticating: false,
         isAuthenticated: true,
-        tokenApp: action.payload.accessToken
+        tokenApp: action.payload.accessToken,
+        datosUsuario: action.payload.data
       }
     case "LOGOUT":
     case "LOGOUT_SUCCESS":
