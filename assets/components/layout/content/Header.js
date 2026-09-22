@@ -11,6 +11,7 @@ import FotoSidebar from './FotoSidebar';
 import ComboBoxImage from "./common/inputs/ComboBoxImage";
 import { listarPostsPorGrupo, listarTags, listarPostsPorTag } from "../../../redux/actions/busquedaTagsActions";
 import { logout } from "../../../redux/actions/authActions";
+import { SettingsMenu } from "../../common/SettingsMenu";
 
 const fruits = [
   { name: 'Todo', imageUrl: deTodo },
@@ -18,64 +19,12 @@ const fruits = [
   { name: 'Homo', imageUrl: homo }
 ];
 
-const SettingsMenu = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
-    const [open, setOpen] = useState(false);
-    const settingsRef = useRef();
-
-    useEffect(() => {
-        function handleClickOutside(event) {
-            if (open && settingsRef.current && !settingsRef.current.contains(event.target)) {
-                setOpen(false);
-            }
-        }
-
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [open]);
-
-    const handleLogout = () => {
-        dispatch(logout()).then(() => {
-            setOpen(false);
-            // Recarga completa para limpiar cualquier estado/caché del usuario en memoria
-            window.location.href = "/";
-        });
-    };
-
-    return (
-        <div className="relative" ref={settingsRef}>
-            <button
-                onClick={() => setOpen(!open)}
-                className="flex items-center justify-center rounded-full size-10 bg-transparent hover:bg-slate-100 text-slate-600 focus:outline-none active:scale-95 transition-transform cursor-pointer"
-            >
-                <Cog6ToothIcon className="h-8 w-8" aria-hidden="true" />
-            </button>
-
-            {open && (
-                <div className="absolute right-0 mt-2 w-44 bg-white border border-slate-200 rounded-md shadow-lg z-50 py-1">
-                    <button
-                        onClick={handleLogout}
-                        className="flex w-full items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 cursor-pointer"
-                    >
-                        <ArrowRightOnRectangleIcon className="h-5 w-5" aria-hidden="true" />
-                        Cerrar sesión
-                    </button>
-                </div>
-            )}
-        </div>
-    );
-};
-
 const Header = ({ titulo="Inicio" }) => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const {isAuthenticated} = useSelector((state) => state.auth);
+    const {isAuthenticated, datosUsuario} = useSelector((state) => state.auth);
 
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(fruits[0]);
 
@@ -84,8 +33,32 @@ const Header = ({ titulo="Inicio" }) => {
     const [idGrupoSeleccionado, setIdGrupoSeleccionado] = useState(0);
 
     const [menuOpen, setMenuOpen] = useState(false);
+    const [openOption, setOpenOptions] = useState(false);
 
     const url = window.location.href;
+
+    //Opciones Engranaje
+    const opcionesEngranaje = () => {
+        return (
+            <div className="absolute right-0 mt-2 w-44 bg-white border border-slate-200 rounded-md shadow-lg z-50 py-1">
+                <button
+                    onClick={() => setOpenOptions(false) || handleLogout()}
+                    className="flex w-full items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 cursor-pointer"
+                >
+                    <ArrowRightOnRectangleIcon className="h-5 w-5" aria-hidden="true" />
+                    Cerrar sesión
+                </button>
+            </div>
+        )
+    }
+
+    const handleLogout = () => {
+        dispatch(logout()).then(() => {
+            setOpenOptions(false);
+            // Recarga completa para limpiar cualquier estado/caché del usuario en memoria
+            window.location.href = "/";
+        });
+    };
 
     const listarPostsPorTagFunc = () => {
         dispatch(listarPostsPorTag())
@@ -187,7 +160,7 @@ const Header = ({ titulo="Inicio" }) => {
                     {/* <button className="flex items-center justify-center rounded-full size-10 bg-primary/20 dark:bg-primary/30 text-primary">
                         <img src={tagSelector} alt="Logo de Tags Selector" className="w-10 h-auto cursor-pointer" />
                     </button> */}
-                    {isAuthenticated && <SettingsMenu />}
+                    {isAuthenticated && <SettingsMenu openOption={openOption} setOpenOptions={setOpenOptions} opciones={opcionesEngranaje} />}
                     {!isAuthenticated && (
                         <button
                             onClick={() => navigate("/login")}
@@ -195,6 +168,11 @@ const Header = ({ titulo="Inicio" }) => {
                         >
                             <UserCircleIcon className="h-8 w-8" aria-hidden="true" />
                         </button>
+                    )}
+                    {isAuthenticated && (
+                        <span className="text-slate-600 text-xs font-medium tracking-wide uppercase bg-slate-100 px-2.5 py-1 rounded-full">
+                            BIENVENIDO, {`${datosUsuario?.nickname}` || "USUARIO"}!
+                        </span>
                     )}
                 </div>
 
@@ -217,7 +195,7 @@ const Header = ({ titulo="Inicio" }) => {
                         {/* <button className="flex items-center justify-center rounded-full size-10 bg-primary/20 dark:bg-primary/30 text-primary">
                             <img src={tagSelector} alt="Logo de Tags Selector" className="w-10 h-auto cursor-pointer" />
                         </button> */}
-                        {isAuthenticated && <SettingsMenu />}
+                        {isAuthenticated && <SettingsMenu openOption={openOption} setOpenOptions={setOpenOptions} opciones={opcionesEngranaje} />}
                         {!isAuthenticated && (
                             <button
                                 onClick={() => navigate("/login")}
@@ -225,6 +203,11 @@ const Header = ({ titulo="Inicio" }) => {
                             >
                                 <UserCircleIcon className="h-8 w-8" aria-hidden="true" />
                             </button>
+                        )}
+                        {isAuthenticated && (
+                            <span className="text-slate-600 text-xs font-medium tracking-wide uppercase bg-slate-100 px-2.5 py-1 rounded-full">
+                                BIENVENIDO, {`${datosUsuario?.nickname}` || "USUARIO"}!
+                            </span>
                         )}
                     </div>
                 )}

@@ -8,7 +8,7 @@ const Layout = ({ children, tituloHeader }) => {
     return (
         <div className="flex min-h-screen min-w-screen">
 
-            <div className="flex flex-col w-full pl-0">
+            <div className="flex flex-col w-full min-h-screen pl-0">
                 
                 {/* Header para pantallas grandes (solo lg y superior) */}
                 <div className="relative py-1 px-2 hidden lg:flex">
@@ -20,7 +20,7 @@ const Layout = ({ children, tituloHeader }) => {
                     <Header titulo={tituloHeader} />
                 </div>
 
-                <div className="flex px-2 py-2 max-w-[100rem] mx-auto w-full justify-center">
+                <div className="flex flex-1 px-2 py-2 max-w-[100rem] mx-auto w-full justify-center">
                     {children}
                 </div>
                 <Footer />

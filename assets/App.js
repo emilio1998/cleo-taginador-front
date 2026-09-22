@@ -1,15 +1,34 @@
+import {useEffect} from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import TestingPage from "./components/pages/backend/testingPage";
 import Posts from "./components/pages/front/posts/Posts";
 import PlantillaLoginContainer from "./components/pages/front/login/plantillaLoginContainer";
+import Error404 from "./components/pages/backend/error404";
+import { sigueSesion, notAuthorized } from "./redux/actions/authActions";
 
 const App = () => {
+    const {isAuthenticated} = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        const checkSession = async () => {
+            if (isAuthenticated) {
+                const result = await sigueSesion();
+                if (result.status !== 200) {
+                    console.log("Sesión no válida, cerrando sesión...");
+                    dispatch(notAuthorized());
+                }
+            }
+        };
+        checkSession();
+    }, []);
     return (
         <div>
             <Routes>
                 <Route index exact path="/" element={<Posts />} />
                 <Route path="/login" element={<PlantillaLoginContainer />} />
                 {/* <Route path="/posts" element={<Posts />} /> */}
+                <Route path="*" element={<Error404 />} />
             </Routes>
         </div>
     )

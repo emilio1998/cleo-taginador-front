@@ -40,12 +40,7 @@ export function logout() {
       try {
         const res = await axios.get(
           server + "/login/cerrarSesion",
-          {
-            headers: {
-              Authorization: "Bearer " + token,
-              "Content-Type": "application/json",
-            },
-          }
+          {}
         );
         dispatch({ type: "LOGOUT_SUCCESS", payload: res.data });
         return res.data;
@@ -61,6 +56,27 @@ export function logout() {
   } catch (e) {
     console.log(e);
   }
+}
+
+export const sigueSesion = async () => {
+  let token = localStorage.getItem("token");
+  const res = { data: null };
+  try {
+    const response = await axios.get(
+      server + "/login/sigueSesion",
+      {
+        headers: {
+          AccessToken: token
+        }
+      }
+    );
+    res.data = response.data;
+    res.status = response.status;
+  } catch (e) {
+    res.data = e.response ? e.response.data : e;
+    res.status = e.response ? e.response.status : 500;
+  }
+  return res;
 }
 
 export function notAuthorized() {
