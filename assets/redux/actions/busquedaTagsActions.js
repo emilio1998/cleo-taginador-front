@@ -99,6 +99,36 @@ export function listarPostsPorTag() {
     }
 }
 
+export function listarImagenesPorPost(datos) {
+    try {
+        return async function (dispatch) {
+            dispatch({type: "LISTAR_IMAGENES_POR_POST"});
+            const url = server + "/busqueda-tags/listarImagenesPorPost";
+            const body = {
+                UNICO_ARCHIVO: datos.UNICO_ARCHIVO,
+                DATOS_ARCHIVO: datos.DATOS_ARCHIVO
+            }
+            return axios.post(
+                url, body
+            )
+            .then((res) => {
+                dispatch({ type: "LISTAR_IMAGENES_POR_POST_SUCCESS", payload: res.data });
+                return res;
+            })
+            .catch((error) => {
+                dispatch({ type: "LISTAR_IMAGENES_POR_POST_FAIL", payload: {} });
+                let res = {};
+                if (!!error.response) {
+                    res = error.response;
+                }
+                return res;
+            });
+        }
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 export function listarTags() {
     try {
         return async function (dispatch) {
