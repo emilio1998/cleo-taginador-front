@@ -163,5 +163,10 @@ module.exports = function (argv, env) {
                 overlay: true,
             },
         },
+        performance: {
+            maxAssetSize: 512000, // 500kb, por encima del favicon.ico actual
+            maxEntrypointSize: 512000,
+            assetFilter: (assetFilename) => !assetFilename.endsWith('.ico'),
+        },
     }
 }
