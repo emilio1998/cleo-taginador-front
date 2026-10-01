@@ -1,7 +1,7 @@
 let GLOBAL;
 if (process.env.NODE_ENV === 'production') {
     GLOBAL = {
-        server: 'https://api.example.com/XX3PROJECT',
+        server: 'https://10.0.2.10:8080/XX3PROJECT',
     }
 } else {
     GLOBAL = {
