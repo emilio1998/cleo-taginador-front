@@ -19,7 +19,7 @@ const fruits = [
   { name: 'Homo', imageUrl: homo }
 ];
 
-const Header = ({ titulo="Inicio" }) => {
+const Header = ({ titulo="Inicio", mostrarTags=true }) => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -215,35 +215,37 @@ const Header = ({ titulo="Inicio" }) => {
 
                 {/* Sección para que el usuario seleccione un tag */}
                 {/* Barra única de grupos en línea horizontal, con scroll si no caben, alineada al ancho de Posts */}
-                <div className="w-full max-w-[96rem] mx-auto">
-                    <div
-                        className="flex flex-nowrap gap-2 w-full overflow-x-auto scrollbar-thin-tags"
-                        style={{ minWidth: 0, padding: '0.5rem 0' }}
-                    >
-                        {posts.map((post, index) => (
-                            <button
-                                key={index}
-                                type="button"
-                                onClick={() => {
-                                    if (post.ID === 0) {
-                                        navigate(`/`);
-                                    } else navigate(`/?grupo=${post.ID}`)
-                                }}
-                                className="flex items-center justify-center px-4 py-1 rounded-full border-2 text-base font-semibold shadow-sm transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 shrink-0"
-                                style={{ 
-                                    minWidth: '3.5rem', 
-                                    minHeight: '2.5rem', 
-                                    whiteSpace: 'nowrap',
-                                    backgroundColor: "#ffffff",
-                                    color: post.color ? post.color : "#1D4ED8",
-                                    borderColor: post.color ? post.color : "#2563EB"
-                                }}
-                            >
-                                {post.title}
-                            </button>
-                        ))}
+                {mostrarTags && (
+                    <div className="w-full max-w-[96rem] mx-auto">
+                        <div
+                            className="flex flex-nowrap gap-2 w-full overflow-x-auto scrollbar-thin-tags"
+                            style={{ minWidth: 0, padding: '0.5rem 0' }}
+                        >
+                            {posts.map((post, index) => (
+                                <button
+                                    key={index}
+                                    type="button"
+                                    onClick={() => {
+                                        if (post.ID === 0) {
+                                            navigate(`/`);
+                                        } else navigate(`/?grupo=${post.ID}`)
+                                    }}
+                                    className="flex items-center justify-center px-4 py-1 rounded-full border-2 text-base font-semibold shadow-sm transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 shrink-0"
+                                    style={{ 
+                                        minWidth: '3.5rem', 
+                                        minHeight: '2.5rem', 
+                                        whiteSpace: 'nowrap',
+                                        backgroundColor: "#ffffff",
+                                        color: post.color ? post.color : "#1D4ED8",
+                                        borderColor: post.color ? post.color : "#2563EB"
+                                    }}
+                                >
+                                    {post.title}
+                                </button>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                )}
         </div>
     )
 }

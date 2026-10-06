@@ -3,6 +3,7 @@ const initial_state = {
     listandoPostsPorGrupo: false,
     listandoTags: false,
     listandoImagenesPorPost: false,
+    listandoPostsPorTag: false
 }
 
 const busquedaTagsReducer = (state = initial_state, action) => {
@@ -20,7 +21,9 @@ const busquedaTagsReducer = (state = initial_state, action) => {
         case "LISTAR_IMAGENES_POR_POST": return {...state, listandoImagenesPorPost: true}
         case "LISTAR_IMAGENES_POR_POST_SUCCESS": return {...state, listandoImagenesPorPost: false}
         case "LISTAR_IMAGENES_POR_POST_FAIL": return {...state, listandoImagenesPorPost: false}
-
+        case "LISTAR_POSTS_POR_TAG": return {...state, listandoPostsPorTag: true}
+        case "LISTAR_POSTS_POR_TAG_SUCCESS": return {...state, listandoPostsPorTag: false}
+        case "LISTAR_POSTS_POR_TAG_FAIL": return {...state, listandoPostsPorTag: false}
     }
     return state;
 }

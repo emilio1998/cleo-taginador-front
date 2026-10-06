@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import Header from "./content/Header";
 import Footer from "./content/Footer";
 
-const Layout = ({ children, tituloHeader }) => {
+const Layout = ({ children, tituloHeader, mostrarTags=true }) => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
@@ -12,12 +12,12 @@ const Layout = ({ children, tituloHeader }) => {
                 
                 {/* Header para pantallas grandes (solo lg y superior) */}
                 <div className="relative py-1 px-2 hidden lg:flex">
-                    <Header titulo={tituloHeader} />
+                    <Header titulo={tituloHeader} mostrarTags={mostrarTags} />
                 </div>
 
                 {/* Header para pantallas pequeñas */}
                 <div className="relative py-1 px-2 lg:hidden">
-                    <Header titulo={tituloHeader} />
+                    <Header titulo={tituloHeader} mostrarTags={mostrarTags} />
                 </div>
 
                 <div className="flex flex-1 px-2 py-2 max-w-[100rem] mx-auto w-full justify-center">
