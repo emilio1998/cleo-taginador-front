@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import img from '../../../../images/imagen.png'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { listarPosts } from '../../../../redux/actions/busquedaPostsActions';
 import { listarImagenesPorPost } from '../../../../redux/actions/busquedaTagsActions';
 import loading from '../../../../images/gif/loading.gif'
@@ -10,11 +10,13 @@ import loading from '../../../../images/gif/loading.gif'
 const PostsContainerV2 = ({ setMostrarTags }) => {
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [posts, setPosts] = useState([])
     const [segundaPagina, setSegundaPagina] = useState(false)
     const [carpetaSeleccionada, setCarpetaSeleccionada] = useState({})
     const [imagenes, setImagenes] = useState([])
+    const [tagsPorPost, setTagsPorPost] = useState([])
     const [idGrupoSeleccionado, setIdGrupoSeleccionado] = useState(0);
 
     const [searchParams] = useSearchParams();
@@ -44,8 +46,10 @@ const PostsContainerV2 = ({ setMostrarTags }) => {
                 if (res.status) {
                     if (res.status === 200) {
                         const data = res.data.data
+                        const dataTags = res.data.dataTags
                         console.log("RES IMAGENES: ", data)
                         setImagenes(data)
+                        setTagsPorPost(dataTags)
                     } else {
                         console.log("Error al listar imágenes por post:", res);
                     }
@@ -146,12 +150,67 @@ const PostsContainerV2 = ({ setMostrarTags }) => {
                             <img src={loading} alt="Loading..." />
                         </div>
                     ) : (
-                        <div className="p-4 overflow-y-auto max-h-[80vh]">
-                            {carpetaSeleccionada && (
-                                <div key={carpetaSeleccionada.ID} className="mb-6">
-                                    <h6 className="text-slate-800 font-medium mb-2">
-                                        {carpetaSeleccionada.TITULO || "umekoj0910"}
-                                    </h6>
+                        <div class="w-full flex-1 flex gap-4 p-4">
+
+                            {/* Columna 1: DIV (Imagen) arriba + DIV abajo. Al cambiar el alto del de arriba, el de abajo (flex-1) se ajusta para compensar, sin alterar el alto total de la columna */}
+                            <div class="flex flex-col flex-1 gap-4">
+                                <h6 className="text-xl font-bold tracking-wide bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent justify-center text-center">
+                                    {carpetaSeleccionada.TITULO || "umekoj0910"}
+                                </h6>
+                                <div class="relative flex items-center justify-center h-[500px]">
+                                    <div
+                                        class="flex items-center justify-center w-full h-full pt-20 pb-10 px-10"
+                                    >
+                                        <img src={carpetaSeleccionada.IMAGENES.imagenPrincipal.srcBase64} alt="Loading..." class="max-w-full max-h-full object-contain" />
+                                    </div>
+                                </div>
+
+                                <div class="relative flex flex-1 items-center justify-center border-[4px] border-black">
+                                    <div class="flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        <span class="text-xl font-bold tracking-wide bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                                            Usuario:
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Columna 2: independiente de la columna 1 */}
+                            <div class="flex flex-col flex-[1.5] gap-4">
+                                <div class="relative flex flex-1 flex-col items-center justify-center gap-3 p-4">
+                                    <span class="text-xl font-bold tracking-wide bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                                        TAGS
+                                    </span>
+                                    <div class="flex flex-wrap items-center justify-center gap-2">
+                                        {tagsPorPost.map((tag, index) => (
+                                            <button
+                                                key={index}
+                                                type="button"
+                                                onClick={() => {
+                                                    setSegundaPagina(false);
+                                                    setCarpetaSeleccionada({});
+                                                    setMostrarTags(true);
+                                                    navigate(`/?grupo=${tag.ID}`)
+                                                }}
+                                                className="flex items-center justify-center px-4 py-1 rounded-full border-2 text-base font-semibold shadow-sm transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 shrink-0"
+                                                style={{ 
+                                                    minWidth: '3.5rem', 
+                                                    minHeight: '2.5rem', 
+                                                    whiteSpace: 'nowrap',
+                                                    backgroundColor: "#ffffff",
+                                                    color: tag.color ? tag.color : "#1D4ED8",
+                                                    borderColor: tag.color ? tag.color : "#2563EB"
+                                                }}
+                                            >
+                                                {tag.NOMBRE}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div class="relative flex flex-1 items-center justify-center">
                                     <div className="columns-2 sm:columns-3 md:columns-4 gap-3">
                                         {imagenes && imagenes.length > 0 ? (
                                             imagenes.map((imgDes, imgIndex) => (
@@ -167,8 +226,9 @@ const PostsContainerV2 = ({ setMostrarTags }) => {
                                         )}
                                     </div>
                                 </div>
-                            )}
+                            </div>
                         </div>
+
                     )
                 )}
             </div>

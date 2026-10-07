@@ -106,7 +106,8 @@ export function listarImagenesPorPost(datos) {
             const url = server + "/busqueda-tags/listarImagenesPorPost";
             const body = {
                 UNICO_ARCHIVO: datos.UNICO_ARCHIVO,
-                DATOS_ARCHIVO: datos.DATOS_ARCHIVO
+                DATOS_ARCHIVO: datos.DATOS_ARCHIVO,
+                ID_POST: datos.ID
             }
             return axios.post(
                 url, body
